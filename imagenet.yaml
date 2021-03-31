@@ -1,0 +1,85 @@
+# Data
+data: 
+    type: 'ImageNet' # {CIFAR-100,}
+    tr: 
+        path: '/ssd_data/imagenet/train'
+    test:
+        path: '/ssd_data/imagenet/val'
+    augmentation:
+        # {none, autoaugment }
+        name: 'none'
+
+# Model
+model: 
+    # { resnet18, resnet50, resnet101, alexnet, squeezenet, vgg16, densenet, shufflenet, mobilenet, wide_resnet50_2, efficientnet-b0~-b7}
+    # { micronet, micronet_pruned }
+    # { resxnetv1-1.0x, resxnetv1-1.3x, resxnetv1-1.5x, resxnetv1-2.0x}
+    name: 'rexnetv1_1.0x'  
+    path: '/home/ikhee/workspace/Edge_Analytics/system/challenges/GrandChallenge/checkpoint' 
+    config: 'none'
+    lr: 0.1
+    batch: 128 
+    num_class: 1000
+    pretrained: 1 #{ 0: False, 1: True} # only support imagenet pretrained rexnet
+    criterion: 
+        name: 'cross_entropy' # {mse, cross_entropy, cutmix_cross_entropy, smooth_cross_entropy, label_smoothing }
+        smoothing: 0.1
+    # step 1: search basic micronet's hyperparameters
+    architecture_search:
+        type: 'none'  # {none, hyperopt}        
+    # step 2: train
+    training:
+        type: 'train'  # { none, train, iterative_train }
+        train_epochs: 600        # iterative_epochs = train_epochs // 4
+    # step 3: prune
+    pruning:
+        type: 'none'    # {none, prune, iterative_prune }
+        prune_iterations: 15     # Number of cycle of pruning that should be done
+        prune_epochs: 200         # pruning epochs in each iteration
+        prune_rate: 25.          # percentage of weight to be pruned after each cycle
+        prune_target_ratio: 70   # percentage of target pruning 
+
+# Regularization(model)
+regularization:
+    name: 'cutmix' # { None, cutout, mixup, cutmix, kdmix }
+    beta: 1.0
+    cutout:
+        nholes: 1
+        length: 16
+    mixup:
+    cutmix:
+        prob: 0.0
+    kdmix:
+        lambda_min: 0.1
+        lambda_max: 0.5
+        ntiles: 10
+        exclude_tiles: 3
+        alpha: 0.9
+        temperature: 4
+        teacher_model: 'none' # { none, resnet50, wideresnet}
+        path: '/home/ikhee/workspace/Edge_Analytics/system/challenges/GrandChallenge/model/pretrained/WRN28-4_21.09.pt'
+             
+# Optimizer 
+optimizer: 
+    name: 'SGD'   # {Adadelta, Adagrad, Adam, AdamW, SparseAdam, Adamax, ASGD, LBFGS, RMSprop, Rprop, SGD }
+                   # {AdamP, SGDP }
+    weight_decay: 0.00001
+    momentum: 0.9
+    clip: 5
+
+# Scheduler
+scheduler: 
+    name: 'CosineAnnealingLR'  # { CosineAnnealingLR, MultiStepLR }
+    cosineannealinglr:
+        # t_max: num_of_epochs
+        eta_min: 0.0005
+        last_epoch: -1
+    multisteplr:
+        gamma: 0.1
+        milestones: [100,150]
+
+# System(settings)
+cuda: 
+    avail: True
+    device: 'cuda:3'   # { 'none' for cpu only, 'cuda:0' for GPU0, 'cuda;1' for GPU1, 'cuda' for all gpus }
+verbose: True
