@@ -2,20 +2,6 @@
 
 <img width="700" src="https://user-images.githubusercontent.com/45547720/113253019-99d32700-92ff-11eb-8e0a-b8c8cb75700d.png">
 
-### Applications
-* Image Captioning(AI허브 데이터 활용 이미지 캡셔닝 예)
-<img width="700" src="https://user-images.githubusercontent.com/45547720/113253019-99d32700-92ff-11eb-8e0a-b8c8cb75700d.png">
-
-
-* Object Tracking(AI허브 데이터 활용 비디오 객체 추적 예)
-<img width="700" src="https://user-images.githubusercontent.com/45547720/113253334-0c440700-9300-11eb-8e76-a5402784bc1e.gif">
-
-
-* Hand Gesture(엣지 디바이스 상의 손동장 인식)
-
-<img width="700" src="https://user-images.githubusercontent.com/45547720/113253300-02ba9f00-9300-11eb-9dc0-7ec102c248c6.gif">
-
-
 ### Overview
 * 트랙 4: AI 모델 최적 경량화(AI 성능열화를 10% 수준으로 유지하며 AI 연산량을 최소화)
 
